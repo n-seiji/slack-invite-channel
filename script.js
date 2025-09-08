@@ -82,6 +82,7 @@ class SlackChannelInviter {
 
             const response = await fetch(`https://slack.com/api/conversations.list?${params}`, {
                 method: 'GET',
+                mode: 'no-cors',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -146,6 +147,7 @@ class SlackChannelInviter {
 
             const response = await fetch(`https://slack.com/api/conversations.members?${params}`, {
                 method: 'GET',
+                mode: 'no-cors',
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -173,6 +175,7 @@ class SlackChannelInviter {
     async joinChannel(token, channelId) {
         const response = await fetch('https://slack.com/api/conversations.join', {
             method: 'POST',
+            mode: 'no-cors',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
