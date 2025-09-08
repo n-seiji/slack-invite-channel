@@ -28,8 +28,8 @@ class SlackChannelInviter {
 
         try {
             // Basic token validation
-            if (!token.startsWith('xoxb-')) {
-                throw new Error('Invalid token format. Token should start with "xoxb-"');
+            if (!token.startsWith('xoxb-') && !token.startsWith('xoxp-')) {
+                throw new Error('Invalid token format. Token should start with "xoxb-" or "xoxp-"');
             }
 
             // Get all channels

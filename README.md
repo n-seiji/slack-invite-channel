@@ -17,6 +17,7 @@ GitHub Pagesで動作するSlackチャンネル招待ツールです。指定し
 - HTTPSを使用していても、完全なセキュリティは保証されません
 - 信頼できる環境でのみ使用してください
 - 使用後はブラウザのキャッシュをクリアすることを推奨します
+- cloneした場合でも簡単に動作します
 
 ## GitHub Pagesへのデプロイ方法
 
@@ -39,11 +40,21 @@ GitHub Pagesで動作するSlackチャンネル招待ツールです。指定し
 
 ## 必要なSlack Token権限
 
-Bot User OAuth Token (`xoxb-`で始まるトークン) に以下のスコープが必要です：
+以下のいずれかのトークンが使用できます：
 
+### Bot User OAuth Token (`xoxb-`で始まるトークン)
+以下のスコープが必要です：
 - `channels:read` - パブリックチャンネル一覧の取得
 - `channels:join` - パブリックチャンネルへの参加  
 - `users:read` - ユーザー情報の取得（ユーザーIDフィルタ使用時）
+
+### User OAuth Token (`xoxp-`で始まるトークン)
+以下のスコープが必要です：
+- `channels:read` - パブリックチャンネル一覧の取得
+- `channels:write` - パブリックチャンネルへの参加
+- `users:read` - ユーザー情報の取得（ユーザーIDフィルタ使用時）
+
+**注意**: User Tokenは個人の認証情報を使用するため、Bot Tokenの使用を推奨します。
 
 ## 使用方法
 
@@ -71,7 +82,7 @@ open http://localhost:8000
 ## トラブルシューティング
 
 ### "Invalid token format"エラー
-- Tokenが`xoxb-`で始まることを確認してください
+- Tokenが`xoxb-`または`xoxp-`で始まることを確認してください
 
 ### "Failed to fetch channels"エラー
 - Tokenの権限を確認してください
