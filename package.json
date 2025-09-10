@@ -1,20 +1,7 @@
 {
   "name": "slack-invite-channel",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build --mode client && vite build",
-    "preview": "vite preview"
-  },
   "dependencies": {
-    "hono": "^4.6.18",
-    "honox": "^0.1.27",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "vite": "^6.0.7"
+    "hono": "^4.6.18"
   }
 }
