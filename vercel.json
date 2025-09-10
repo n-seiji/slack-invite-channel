@@ -2,15 +2,13 @@
   "functions": {
     "api/index.js": {
       "maxDuration": 30,
-      "includeFiles": "dist/**"
+      "runtime": "edge"
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api/index"
+      "destination": "/api"
     }
-  ],
-  "buildCommand": "bun run build",
-  "outputDirectory": "dist"
+  ]
 }
