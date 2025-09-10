@@ -1,7 +1,19 @@
 {
   "name": "slack-invite-channel",
   "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
   "dependencies": {
-    "hono": "^4.6.18"
+    "hono": "^4.6.18",
+    "honox": "^0.1.27"
+  },
+  "devDependencies": {
+    "@hono/node-server": "^1.14.1",
+    "@hono/vite-build": "^1.7.0",
+    "@hono/vite-dev-server": "^0.18.1",
+    "vite": "^6.0.7"
   }
 }
