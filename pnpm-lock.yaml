@@ -15,15 +15,6 @@ importers:
         specifier: ^0.1.46
         version: 0.1.46(hono@4.9.6)(miniflare@4.20250906.0)(wrangler@4.35.0(@cloudflare/workers-types@4.20250910.0))
     devDependencies:
-      '@cloudflare/workers-types':
-        specifier: ^4.20250214.0
-        version: 4.20250910.0
-      '@hono/vite-build':
-        specifier: ^1.3.0
-        version: 1.7.0(hono@4.9.6)
-      '@hono/vite-dev-server':
-        specifier: ^0.18.2
-        version: 0.18.3(hono@4.9.6)(miniflare@4.20250906.0)(wrangler@4.35.0(@cloudflare/workers-types@4.20250910.0))
       '@tailwindcss/vite':
         specifier: ^4.0.9
         version: 4.1.13(vite@6.3.6(jiti@2.5.1)(lightningcss@1.30.1))
@@ -33,9 +24,6 @@ importers:
       vite:
         specifier: ^6.3.5
         version: 6.3.6(jiti@2.5.1)(lightningcss@1.30.1)
-      wrangler:
-        specifier: ^4.4.0
-        version: 4.35.0(@cloudflare/workers-types@4.20250910.0)
 
 packages:
 
@@ -449,25 +437,6 @@ packages:
     engines: {node: '>=18.14.1'}
     peerDependencies:
       hono: ^4
-
-  '@hono/vite-build@1.7.0':
-    resolution: {integrity: sha512-L73WBed5teC7DHTzXYkho83POYYluD2rTkbT76FJuqpfXPgTW/PsbIa8O0YcCETE3VUoh584fe6vuLAM5ctjww==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: '*'
-
-  '@hono/vite-dev-server@0.18.3':
-    resolution: {integrity: sha512-JztypLmq6qtQ3OAcz5vDzwXYBBymLztSbfDuNf4XTWkfppLjf6DHvYHtQZ5idOfNhUzdnbYY7/6QAKlVk6G3QQ==}
-    engines: {node: '>=18.14.1'}
-    peerDependencies:
-      hono: '*'
-      miniflare: '*'
-      wrangler: '*'
-    peerDependenciesMeta:
-      miniflare:
-        optional: true
-      wrangler:
-        optional: true
 
   '@hono/vite-dev-server@0.20.1':
     resolution: {integrity: sha512-wXikV0C5tPqwH6udA68VTsmnFKWGhIeBuhuxgdGDQIbVNbv5gD0vqKLhx4nG1o4dhksaWPiiSqZV58sTKUzNxA==}
@@ -1529,12 +1498,14 @@ snapshots:
   '@cloudflare/kv-asset-handler@0.4.0':
     dependencies:
       mime: 3.0.0
+    optional: true
 
   '@cloudflare/unenv-preset@2.7.3(unenv@2.0.0-rc.21)(workerd@1.20250906.0)':
     dependencies:
       unenv: 2.0.0-rc.21
     optionalDependencies:
       workerd: 1.20250906.0
+    optional: true
 
   '@cloudflare/workerd-darwin-64@1.20250906.0':
     optional: true
@@ -1551,11 +1522,13 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20250906.0':
     optional: true
 
-  '@cloudflare/workers-types@4.20250910.0': {}
+  '@cloudflare/workers-types@4.20250910.0':
+    optional: true
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+    optional: true
 
   '@dependents/detective-less@5.0.1':
     dependencies:
@@ -1724,19 +1697,6 @@ snapshots:
     dependencies:
       hono: 4.9.6
 
-  '@hono/vite-build@1.7.0(hono@4.9.6)':
-    dependencies:
-      hono: 4.9.6
-
-  '@hono/vite-dev-server@0.18.3(hono@4.9.6)(miniflare@4.20250906.0)(wrangler@4.35.0(@cloudflare/workers-types@4.20250910.0))':
-    dependencies:
-      '@hono/node-server': 1.19.2(hono@4.9.6)
-      hono: 4.9.6
-      minimatch: 9.0.5
-    optionalDependencies:
-      miniflare: 4.20250906.0
-      wrangler: 4.35.0(@cloudflare/workers-types@4.20250910.0)
-
   '@hono/vite-dev-server@0.20.1(hono@4.9.6)(miniflare@4.20250906.0)(wrangler@4.35.0(@cloudflare/workers-types@4.20250910.0))':
     dependencies:
       '@hono/node-server': 1.19.2(hono@4.9.6)
@@ -1848,6 +1808,7 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+    optional: true
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -1864,14 +1825,17 @@ snapshots:
   '@poppinss/colors@4.1.5':
     dependencies:
       kleur: 4.1.5
+    optional: true
 
   '@poppinss/dumper@0.6.4':
     dependencies:
       '@poppinss/colors': 4.1.5
       '@sindresorhus/is': 7.0.2
       supports-color: 10.2.2
+    optional: true
 
-  '@poppinss/exception@1.2.2': {}
+  '@poppinss/exception@1.2.2':
+    optional: true
 
   '@rollup/rollup-android-arm-eabi@4.50.1':
     optional: true
@@ -1936,9 +1900,11 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.50.1':
     optional: true
 
-  '@sindresorhus/is@7.0.2': {}
+  '@sindresorhus/is@7.0.2':
+    optional: true
 
-  '@speed-highlight/core@1.2.7': {}
+  '@speed-highlight/core@1.2.7':
+    optional: true
 
   '@tailwindcss/node@4.1.13':
     dependencies:
@@ -2081,15 +2047,18 @@ snapshots:
 
   '@vue/shared@3.5.21': {}
 
-  acorn-walk@8.3.2: {}
+  acorn-walk@8.3.2:
+    optional: true
 
-  acorn@8.14.0: {}
+  acorn@8.14.0:
+    optional: true
 
   ast-module-types@6.0.1: {}
 
   balanced-match@1.0.2: {}
 
-  blake3-wasm@2.1.5: {}
+  blake3-wasm@2.1.5:
+    optional: true
 
   brace-expansion@2.0.2:
     dependencies:
@@ -2104,6 +2073,7 @@ snapshots:
   color-convert@2.0.1:
     dependencies:
       color-name: 1.1.4
+    optional: true
 
   color-name@1.1.4: {}
 
@@ -2111,21 +2081,25 @@ snapshots:
     dependencies:
       color-name: 1.1.4
       simple-swizzle: 0.2.2
+    optional: true
 
   color@4.2.3:
     dependencies:
       color-convert: 2.0.1
       color-string: 1.9.1
+    optional: true
 
   commander@12.1.0: {}
 
-  cookie@1.0.2: {}
+  cookie@1.0.2:
+    optional: true
 
   debug@4.4.1:
     dependencies:
       ms: 2.1.3
 
-  defu@6.1.4: {}
+  defu@6.1.4:
+    optional: true
 
   detect-libc@2.0.4: {}
 
@@ -2192,7 +2166,8 @@ snapshots:
 
   entities@4.5.0: {}
 
-  error-stack-parser-es@1.0.5: {}
+  error-stack-parser-es@1.0.5:
+    optional: true
 
   esbuild@0.25.4:
     optionalDependencies:
@@ -2221,6 +2196,7 @@ snapshots:
       '@esbuild/win32-arm64': 0.25.4
       '@esbuild/win32-ia32': 0.25.4
       '@esbuild/win32-x64': 0.25.4
+    optional: true
 
   esbuild@0.25.9:
     optionalDependencies:
@@ -2269,9 +2245,11 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  exit-hook@2.2.1: {}
+  exit-hook@2.2.1:
+    optional: true
 
-  exsolve@1.0.7: {}
+  exsolve@1.0.7:
+    optional: true
 
   fast-glob@3.3.3:
     dependencies:
@@ -2305,7 +2283,8 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  glob-to-regexp@0.4.1: {}
+  glob-to-regexp@0.4.1:
+    optional: true
 
   globals@11.12.0: {}
 
@@ -2334,7 +2313,8 @@ snapshots:
       - supports-color
       - wrangler
 
-  is-arrayish@0.3.2: {}
+  is-arrayish@0.3.2:
+    optional: true
 
   is-extglob@2.1.1: {}
 
@@ -2356,7 +2336,8 @@ snapshots:
 
   jsonc-parser@3.3.1: {}
 
-  kleur@4.1.5: {}
+  kleur@4.1.5:
+    optional: true
 
   lightningcss-darwin-arm64@1.30.1:
     optional: true
@@ -2414,7 +2395,8 @@ snapshots:
       braces: 3.0.3
       picomatch: 2.3.1
 
-  mime@3.0.0: {}
+  mime@3.0.0:
+    optional: true
 
   miniflare@4.20250906.0:
     dependencies:
@@ -2433,6 +2415,7 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+    optional: true
 
   minimatch@9.0.5:
     dependencies:
@@ -2461,11 +2444,14 @@ snapshots:
     dependencies:
       '@babel/parser': 7.28.4
 
-  ohash@2.0.11: {}
+  ohash@2.0.11:
+    optional: true
 
-  path-to-regexp@6.3.0: {}
+  path-to-regexp@6.3.0:
+    optional: true
 
-  pathe@2.0.3: {}
+  pathe@2.0.3:
+    optional: true
 
   picocolors@1.1.1: {}
 
@@ -2570,19 +2556,23 @@ snapshots:
       '@img/sharp-wasm32': 0.33.5
       '@img/sharp-win32-ia32': 0.33.5
       '@img/sharp-win32-x64': 0.33.5
+    optional: true
 
   simple-swizzle@0.2.2:
     dependencies:
       is-arrayish: 0.3.2
+    optional: true
 
   source-map-js@1.2.1: {}
 
   source-map@0.6.1:
     optional: true
 
-  stoppable@1.1.0: {}
+  stoppable@1.1.0:
+    optional: true
 
-  supports-color@10.2.2: {}
+  supports-color@10.2.2:
+    optional: true
 
   tailwindcss@4.1.13: {}
 
@@ -2617,9 +2607,11 @@ snapshots:
 
   typescript@5.9.2: {}
 
-  ufo@1.6.1: {}
+  ufo@1.6.1:
+    optional: true
 
-  undici@7.16.0: {}
+  undici@7.16.0:
+    optional: true
 
   unenv@2.0.0-rc.21:
     dependencies:
@@ -2628,6 +2620,7 @@ snapshots:
       ohash: 2.0.11
       pathe: 2.0.3
       ufo: 1.6.1
+    optional: true
 
   vite@6.3.6(jiti@2.5.1)(lightningcss@1.30.1):
     dependencies:
@@ -2649,6 +2642,7 @@ snapshots:
       '@cloudflare/workerd-linux-64': 1.20250906.0
       '@cloudflare/workerd-linux-arm64': 1.20250906.0
       '@cloudflare/workerd-windows-64': 1.20250906.0
+    optional: true
 
   wrangler@4.35.0(@cloudflare/workers-types@4.20250910.0):
     dependencies:
@@ -2666,8 +2660,10 @@ snapshots:
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
+    optional: true
 
-  ws@8.18.0: {}
+  ws@8.18.0:
+    optional: true
 
   yallist@5.0.0: {}
 
@@ -2675,6 +2671,7 @@ snapshots:
     dependencies:
       '@poppinss/exception': 1.2.2
       error-stack-parser-es: 1.0.5
+    optional: true
 
   youch@4.1.0-beta.10:
     dependencies:
@@ -2683,5 +2680,7 @@ snapshots:
       '@speed-highlight/core': 1.2.7
       cookie: 1.0.2
       youch-core: 0.3.3
+    optional: true
 
-  zod@3.22.3: {}
+  zod@3.22.3:
+    optional: true

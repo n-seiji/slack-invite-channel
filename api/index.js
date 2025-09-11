@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-  const app = await import('../dist/index.js')
+  const app = await import('../dist/server.js')
   return app.default.fetch(req, {
     env: process.env,
     executionCtx: {
