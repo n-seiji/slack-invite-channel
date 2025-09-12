@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "echo 'No dev server needed for static files'"
+    "dev": "echo 'No dev server needed for static files'",
+    "build": "echo 'No build step required for static files'"
   }
 }
