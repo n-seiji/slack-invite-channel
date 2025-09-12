@@ -1,20 +1,8 @@
 {
   "buildCommand": "pnpm run build",
-  "outputDirectory": "dist",
   "functions": {
-    "api/index.js": {
-      "maxDuration": 30,
-      "includeFiles": "dist/**"
+    "api/[[...route]].js": {
+      "maxDuration": 30
     }
-  },
-  "rewrites": [
-    {
-      "source": "/static/(.*)",
-      "destination": "/static/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api"
-    }
-  ]
+  }
 }
