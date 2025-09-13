@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slack Channel Inviter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl w-full">
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Slack Channel Inviter</h1>
+    
+    <!-- Security Warning -->
+    <div class="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+      <div class="flex items-start">
+        <svg class="w-5 h-5 text-yellow-600 mt-0.5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <div class="text-sm text-yellow-800">
+          <p class="font-semibold mb-1">⚠️ セキュリティに関する重要な注意事項</p>
+          <ul class="list-disc ml-5 space-y-1">
+            <li>このツールはクライアントサイドで動作するため、トークンがブラウザに保存される可能性があります</li>
+            <li>Bot Token (xoxb-) の使用を推奨します。User Token (xoxp-) は強力な権限を持つため注意してください</li>
+            <li>公共のコンピュータでは使用しないでください</li>
+            <li>使用後はブラウザのキャッシュとCookieをクリアすることを推奨します</li>
+            <li><strong>トークンは利用後、Slackの設定から削除することをお勧めします</strong></li>
+            <li>より安全に使用したい場合は、このツールをローカルでも実行できます（GitHubからクローンして使用）</li>
+          </ul>
+          <p class="mt-2 text-xs italic">※ このツールは悪意のある動作は行いませんが、万が一に備えてセキュリティ対策をお願いします</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mb-6">
+      <label for="token" class="block text-sm font-medium text-gray-700 mb-2">
+        Slack Token (Bot Token xoxb- or User Token xoxp-)
+      </label>
+      <input
+        type="password"
+        id="token"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="xoxb-... または xoxp-..."
+      />
+    </div>
+
+    <!-- Pattern-based filtering -->
+    <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-700 mb-3">📋 フィルタリングオプション</h3>
+      
+      <div class="mb-4">
+        <label class="block text-sm text-gray-600 mb-2">チャンネル名パターン</label>
+        <div class="flex gap-2 mb-2">
+          <label class="flex items-center">
+            <input type="radio" name="patternType" value="prefix" class="mr-2" checked>
+            <span class="text-sm">前方一致</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" name="patternType" value="suffix" class="mr-2">
+            <span class="text-sm">後方一致</span>
+          </label>
+          <label class="flex items-center">
+            <input type="radio" name="patternType" value="contains" class="mr-2">
+            <span class="text-sm">部分一致</span>
+          </label>
+        </div>
+        <input
+          type="text"
+          id="channelPattern"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="例: 2025-ex_"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="userId" class="block text-sm text-gray-600 mb-2">
+          ユーザーIDでフィルタ (そのユーザーが参加しているチャンネルのみ表示)
+        </label>
+        <input
+          type="text"
+          id="userId"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="例: U1234567890"
+        />
+      </div>
+
+      <div class="flex items-center">
+        <input type="checkbox" id="dryRun" class="mr-2">
+        <label for="dryRun" class="text-sm text-gray-600">
+          ドライラン (実際には参加せずに対象チャンネルを確認)
+        </label>
+      </div>
+    </div>
+
+    <button
+      id="fetchChannelsBtn"
+      class="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors mb-6 disabled:bg-gray-400"
+    >
+      チャンネル一覧を取得
+    </button>
+
+    <div id="channelsList" class="hidden">
+      <h2 class="text-xl font-semibold mb-4">
+        <span id="channelListTitle">チャンネルを選択</span>
+        <span id="channelCount" class="text-sm text-gray-600 ml-2"></span>
+      </h2>
+      
+      <div class="mb-4 flex gap-2">
+        <button id="selectAllBtn" class="text-sm bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">
+          すべて選択
+        </button>
+        <button id="deselectAllBtn" class="text-sm bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">
+          すべて解除
+        </button>
+      </div>
+      
+      <div id="channels" class="space-y-2 mb-6 max-h-96 overflow-y-auto border border-gray-200 rounded p-2"></div>
+      
+      <button
+        id="inviteBtn"
+        class="w-full bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors disabled:bg-gray-400"
+      >
+        選択したチャンネルに参加
+      </button>
+    </div>
+
+    <div id="message" class="mt-4 text-center"></div>
+    
+    <!-- Usage Tips -->
+    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <h3 class="text-sm font-semibold text-blue-900 mb-2">💡 使用のヒント</h3>
+      <ul class="text-xs text-blue-800 space-y-1">
+        <li>• パターンフィルタを使用して、プロジェクト名や年度で一括参加できます（例: "2025-" で2025年のチャンネル）</li>
+        <li>• ドライランモードで事前に対象チャンネルを確認することをお勧めします</li>
+        <li>• 大量のチャンネルに参加する場合は、API制限を避けるため自動で1秒の遅延が入ります</li>
+        <li>• Bot Tokenの場合、招待する権限が必要です。User Tokenは自分自身の参加のみ可能です</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const tokenInput = document.getElementById('token');
+    const fetchChannelsBtn = document.getElementById('fetchChannelsBtn');
+    const channelsList = document.getElementById('channelsList');
+    const channelsDiv = document.getElementById('channels');
+    const inviteBtn = document.getElementById('inviteBtn');
+    const messageDiv = document.getElementById('message');
+    const channelPattern = document.getElementById('channelPattern');
+    const userId = document.getElementById('userId');
+    const dryRun = document.getElementById('dryRun');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const deselectAllBtn = document.getElementById('deselectAllBtn');
+    const channelCount = document.getElementById('channelCount');
+    const channelListTitle = document.getElementById('channelListTitle');
+
+    let selectedChannels = new Set();
+    let allChannels = [];
+    let filteredChannels = [];
+    let isUserToken = false;
+    let loading = false;
+
+    function setLoading(isLoading) {
+      loading = isLoading;
+      fetchChannelsBtn.disabled = isLoading;
+      inviteBtn.disabled = isLoading || selectedChannels.size === 0;
+    }
+
+    function showMessage(text, type) {
+      messageDiv.className = 'mt-4 text-center p-3 rounded';
+      if (type === 'error') {
+        messageDiv.className += ' bg-red-100 text-red-700';
+      } else if (type === 'success') {
+        messageDiv.className += ' bg-green-100 text-green-700';
+      } else if (type === 'warning') {
+        messageDiv.className += ' bg-yellow-100 text-yellow-700';
+      } else {
+        messageDiv.className += ' bg-blue-100 text-blue-700';
+      }
+      messageDiv.textContent = text;
+    }
+
+    fetchChannelsBtn.addEventListener('click', async () => {
+      const token = tokenInput.value.trim();
+      if (!token) {
+        showMessage('トークンを入力してください', 'error');
+        return;
+      }
+
+      isUserToken = token.startsWith('xoxp-');
+      setLoading(true);
+      showMessage('チャンネル一覧を取得中...', 'info');
+
+      try {
+        const response = await fetch('/api/slack-proxy', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            token,
+            endpoint: 'conversations.list',
+            params: {
+              types: 'public_channel,private_channel',
+              exclude_archived: true,
+              limit: 1000
+            }
+          })
+        });
+
+        const data = await response.json();
+        
+        if (data.ok) {
+          allChannels = data.channels || [];
+          await applyFilters();
+          channelsList.classList.remove('hidden');
+        } else {
+          showMessage(`エラー: ${data.error}`, 'error');
+        }
+      } catch (error) {
+        showMessage(`エラー: ${error.message}`, 'error');
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    async function applyFilters() {
+      const pattern = channelPattern.value.trim();
+      const patternType = document.querySelector('input[name="patternType"]:checked').value;
+      const userIdFilter = userId.value.trim();
+      
+      filteredChannels = allChannels.filter(channel => {
+        // Skip channels user is already a member of (unless dry run)
+        if (!dryRun.checked && channel.is_member) {
+          return false;
+        }
+        
+        // Apply pattern filter
+        if (pattern) {
+          const name = channel.name.toLowerCase();
+          const searchPattern = pattern.toLowerCase();
+          if (patternType === 'prefix' && !name.startsWith(searchPattern)) {
+            return false;
+          }
+          if (patternType === 'suffix' && !name.endsWith(searchPattern)) {
+            return false;
+          }
+          if (patternType === 'contains' && !name.includes(searchPattern)) {
+            return false;
+          }
+        }
+        
+        // Apply user filter
+        if (userIdFilter && channel.members && !channel.members.includes(userIdFilter)) {
+          return false;
+        }
+        
+        return true;
+      });
+      
+      displayChannels(filteredChannels);
+      
+      const totalMsg = `${filteredChannels.length}個のチャンネル`;
+      const filterMsg = pattern || userIdFilter ? ' (フィルタ適用済み)' : '';
+      channelCount.textContent = totalMsg + filterMsg;
+      
+      if (dryRun.checked) {
+        channelListTitle.textContent = 'ドライラン - 対象チャンネル';
+        inviteBtn.textContent = 'ドライランを実行';
+      } else {
+        channelListTitle.textContent = 'チャンネルを選択';
+        inviteBtn.textContent = '選択したチャンネルに参加';
+      }
+      
+      showMessage(`${filteredChannels.length}個のチャンネルが条件に一致しました`, 'success');
+    }
+    
+    function displayChannels(channels) {
+      channelsDiv.innerHTML = '';
+      channels.forEach(channel => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center p-2 hover:bg-gray-50 rounded';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = channel.id;
+        checkbox.className = 'mr-3';
+        checkbox.addEventListener('change', (e) => {
+          if (e.target.checked) {
+            selectedChannels.add(channel.id);
+          } else {
+            selectedChannels.delete(channel.id);
+          }
+          inviteBtn.disabled = loading || selectedChannels.size === 0;
+        });
+
+        const label = document.createElement('label');
+        label.htmlFor = channel.id;
+        label.className = 'cursor-pointer flex-1';
+        label.innerHTML = `
+          <span class="font-medium">#${channel.name}</span>
+          ${channel.is_member ? '<span class="ml-2 text-xs text-green-600">✓ 参加済み</span>' : ''}
+          ${channel.is_private ? '<span class="ml-2 text-xs text-gray-500">🔒 プライベート</span>' : ''}
+        `;
+
+        div.appendChild(checkbox);
+        div.appendChild(label);
+        channelsDiv.appendChild(div);
+      });
+    }
+
+    // Select/Deselect all buttons
+    selectAllBtn.addEventListener('click', () => {
+      filteredChannels.forEach(channel => {
+        selectedChannels.add(channel.id);
+        const checkbox = document.getElementById(channel.id);
+        if (checkbox) checkbox.checked = true;
+      });
+      inviteBtn.disabled = loading || selectedChannels.size === 0;
+    });
+    
+    deselectAllBtn.addEventListener('click', () => {
+      selectedChannels.clear();
+      document.querySelectorAll('#channels input[type="checkbox"]').forEach(cb => cb.checked = false);
+      inviteBtn.disabled = true;
+    });
+    
+    // Re-apply filters when pattern changes
+    channelPattern.addEventListener('input', async () => {
+      if (allChannels.length > 0) {
+        await applyFilters();
+      }
+    });
+    
+    document.querySelectorAll('input[name="patternType"]').forEach(radio => {
+      radio.addEventListener('change', async () => {
+        if (allChannels.length > 0 && channelPattern.value) {
+          await applyFilters();
+        }
+      });
+    });
+    
+    userId.addEventListener('input', async () => {
+      if (allChannels.length > 0) {
+        await applyFilters();
+      }
+    });
+    
+    dryRun.addEventListener('change', async () => {
+      if (allChannels.length > 0) {
+        await applyFilters();
+      }
+    });
+    
+    inviteBtn.addEventListener('click', async () => {
+      const token = tokenInput.value.trim();
+      if (selectedChannels.size === 0) {
+        showMessage('チャンネルを選択してください', 'error');
+        return;
+      }
+
+      if (dryRun.checked) {
+        // Dry run mode - just show what would be joined
+        const channelNames = Array.from(selectedChannels).map(id => {
+          const channel = filteredChannels.find(c => c.id === id);
+          return channel ? `#${channel.name}` : id;
+        });
+        showMessage(`ドライラン完了: 以下の${channelNames.length}個のチャンネルに参加予定:\n${channelNames.join(', ')}`, 'info');
+        return;
+      }
+
+      setLoading(true);
+      showMessage(`${selectedChannels.size}個のチャンネルに参加中...`, 'info');
+      
+      const results = [];
+      for (const channelId of selectedChannels) {
+        // Add rate limiting (1 second delay between calls)
+        if (results.length > 0) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+        try {
+          const endpoint = isUserToken ? 'conversations.join' : 'conversations.invite';
+          const params = isUserToken 
+            ? { channel: channelId }
+            : { channel: channelId, users: 'U_YOUR_USER_ID' }; // Bot tokenの場合はユーザーIDが必要
+
+          const response = await fetch('/api/slack-proxy', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              token,
+              endpoint,
+              params
+            })
+          });
+
+          const data = await response.json();
+          results.push({ channelId, success: data.ok, error: data.error });
+        } catch (error) {
+          results.push({ channelId, success: false, error: error.message });
+        }
+      }
+
+      const successCount = results.filter(r => r.success).length;
+      showMessage(`${successCount}/${results.length}個のチャンネルへの参加が完了しました`, successCount === results.length ? 'success' : 'warning');
+      
+      // Reset selection
+      selectedChannels.clear();
+      document.querySelectorAll('#channels input[type="checkbox"]').forEach(cb => cb.checked = false);
+      setLoading(false);
+    });
+  </script>
+</body>
+</html>

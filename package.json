@@ -1,20 +1,9 @@
 {
-  "name": "basic",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build --mode client && vite build",
-    "preview": "vite preview",
-    "deploy": "pnpm run build && wrangler deploy"
-  },
+  "name": "slack-invite-channel",
+  "version": "1.0.0",
   "private": true,
-  "dependencies": {
-    "hono": "^4.9.6",
-    "honox": "^0.1.46"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.0.9",
-    "tailwindcss": "^4.0.9",
-    "vite": "^6.3.5"
+  "scripts": {
+    "dev": "echo 'No dev server needed for static files'",
+    "build": "echo 'No build step required for static files'"
   }
 }
