@@ -1,7 +1,7 @@
 {
   "outputDirectory": "public",
   "functions": {
-    "api/slack-proxy.js": {
+    "api/slack-proxy.ts": {
       "maxDuration": 30
     }
   },
