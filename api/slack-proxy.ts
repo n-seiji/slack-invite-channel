@@ -1,4 +1,21 @@
-export default async function handler(req, res) {
+import { VercelRequest, VercelResponse } from '@vercel/node';
+
+interface RequestBody {
+  token: string;
+  endpoint: string;
+  params?: Record<string, any>;
+}
+
+interface SlackResponse {
+  ok: boolean;
+  error?: string;
+  [key: string]: any;
+}
+
+export default async function handler(
+  req: VercelRequest,
+  res: VercelResponse
+): Promise<void | VercelResponse> {
   // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -15,7 +32,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { token, endpoint, params } = req.body;
+    const { token, endpoint, params } = req.body as RequestBody;
 
     if (!token || !endpoint) {
       return res.status(400).json({ error: 'Token and endpoint are required' });
@@ -34,16 +51,16 @@ export default async function handler(req, res) {
       body: JSON.stringify(params || {}),
     });
 
-    const data = await response.json();
-    
+    const data: SlackResponse = await response.json();
+
     // Return Slack API response
     return res.status(200).json(data);
   } catch (error) {
     console.error('Slack API proxy error:', error);
-    return res.status(500).json({ 
-      ok: false, 
+    return res.status(500).json({
+      ok: false,
       error: 'Internal server error',
-      details: error.message 
+      details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 }

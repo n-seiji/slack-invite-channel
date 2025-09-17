@@ -4,6 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "echo 'No dev server needed for static files'",
-    "build": "echo 'No build step required for static files'"
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vercel/node": "^3.0.0",
+    "typescript": "^5.0.0"
   }
 }
