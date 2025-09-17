@@ -51,7 +51,7 @@ export default async function handler(
       body: JSON.stringify(params || {}),
     });
 
-    const data: SlackResponse = await response.json();
+    const data = await response.json() as SlackResponse;
 
     // Return Slack API response
     return res.status(200).json(data);
