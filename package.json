@@ -4,9 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --mode client && vite build",
-    "start": "node dist/node.js",
-    "preview": "vite preview",
-    "deploy": "pnpm run build && wrangler deploy"
+    "start": "node dist/index.js",
+    "preview": "vite preview"
   },
   "private": true,
   "dependencies": {
@@ -15,7 +14,6 @@
   },
   "devDependencies": {
     "@hono/node-server": "^1.19.3",
-    "@hono/vite-dev-server": "^0.21.0",
     "@tailwindcss/vite": "^4.0.9",
     "tailwindcss": "^4.0.9",
     "vite": "^6.3.5"

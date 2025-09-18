@@ -32,9 +32,18 @@ export default defineConfig(({ mode }) => {
       build: {
         ssr: true,
         rollupOptions: {
-          input: ['./app/node.ts']
+          input: {
+            index: './app/node.ts'
+          },
+          output: {
+            format: 'esm',
+            entryFileNames: '[name].js'
+          }
         },
-        emptyOutDir: false
+        emptyOutDir: false,
+        minify: false,
+        outDir: 'dist',
+        target: 'node18'
       },
       ssr: {
         external: ['@hono/node-server']

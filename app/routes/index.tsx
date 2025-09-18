@@ -1,14 +1,11 @@
-import { createRoute } from 'honox/factory'
 import SlackInviter from '../islands/SlackInviter'
 
-export default createRoute((c) => {
-  return c.render(
-    <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <title>Slack Channel Inviter</title>
-      <div class="bg-white rounded-lg shadow-md p-8 max-w-2xl w-full">
-        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Slack Channel Inviter</h1>
+export default function Home() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
         <SlackInviter />
       </div>
     </div>
   )
-})
+}
