@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       build: {
         ssr: true,
         rollupOptions: {
-          input: ['./app/server.ts']
+          input: ['./app/node.ts']
         },
         emptyOutDir: false
       },
