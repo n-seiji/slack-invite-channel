@@ -1,6 +1,10 @@
 {
-  "buildCommand": "pnpm build",
-  "outputDirectory": "dist",
-  "installCommand": "pnpm install",
-  "framework": null
+  "buildCommand": "echo 'No build needed'",
+  "outputDirectory": ".",
+  "installCommand": "npm install",
+  "functions": {
+    "src/index.js": {
+      "maxDuration": 10
+    }
+  }
 }
