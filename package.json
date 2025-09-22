@@ -2,8 +2,8 @@
   "name": "slack-invite-channel",
   "type": "module",
   "scripts": {
-    "dev": "node --watch src/index.js",
-    "start": "node src/index.js"
+    "dev": "node --watch api/index.js",
+    "start": "node api/index.js"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.1",
