@@ -4,10 +4,10 @@
 This is a web-based tool for joining Slack channels that match specific patterns. Users can search for channels and join them through a simple web interface.
 
 ## Architecture
-- **Framework**: Hono (lightweight web framework for Node.js)
-- **Structure**: Single-file architecture (`api/index.js` contains both server and embedded HTML/CSS/JS)
+- **Framework**: Next.js
+- **Structure**: API Routes in `/app/api` directory with embedded HTML/CSS/JS
 - **API Pattern**: Proxy pattern for Slack API calls through `/api/slack/*` endpoints
-- **Deployment**: Designed for Vercel Serverless Functions (note: `/api` directory structure)
+- **Deployment**: Designed for Vercel (Next.js default deployment)
 
 ## Common Commands
 ```bash
@@ -40,10 +40,11 @@ npx http-server
 
 ### File Structure
 ```
-/api/index.js         # Main application (server + embedded UI)
-/package.json         # Dependencies and scripts
-/pnpm-lock.yaml      # Lock file
-/README.md           # User documentation
+/app/page.tsx                    # Main UI page
+/app/api/slack/[endpoint]/route.ts  # Slack API proxy routes
+/package.json                    # Dependencies and scripts
+/pnpm-lock.yaml                 # Lock file
+/README.md                      # User documentation
 ```
 
 ### Important Code Patterns
@@ -91,8 +92,7 @@ curl -X POST https://slack.com/api/auth.test \
 
 ## Development Notes
 - The application runs on port 3000 by default
-- Uses Node.js 18+ features (ES modules)
-- Single-file design makes deployment simple but keep all code in `api/index.js`
+- Standard Next.js deployment (just run `npm run build` and deploy)
 - Responsive CSS breakpoint at 600px for mobile devices
 
 ## Git Branch Info
