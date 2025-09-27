@@ -21,10 +21,12 @@ const translations = {
       'Go to Slack API Apps',
       'Create a new app or select existing one',
       'Go to "OAuth & Permissions"',
-      'Add scopes: channels:read, channels:write.invites',
+      'Add required scopes:',
       'Install app to workspace',
-      'Copy the Bot User OAuth Token (starts with xoxb-)'
+      'Copy the token you need'
     ],
+    botTokenScopes: 'Bot Token (xoxb-): channels:read, channels:write.invites',
+    userTokenScopes: 'User Token (xoxp-): channels:read, channels:write.invites, channels:write',
     slackToken: 'Slack Token',
     tokenPlaceholder: 'xoxb-... or xoxp-...',
     tokenHelp: 'Bot token (xoxb-) or User token (xoxp-)',
@@ -73,10 +75,12 @@ const translations = {
       'Slack API Appsにアクセス',
       '新しいアプリを作成または既存のアプリを選択',
       '「OAuth & Permissions」に移動',
-      'スコープを追加: channels:read, channels:write.invites',
+      '必要なスコープを追加:',
       'ワークスペースにアプリをインストール',
-      'Bot User OAuthトークンをコピー（xoxb-で始まる）'
+      '必要なトークンをコピー'
     ],
+    botTokenScopes: 'ボットトークン (xoxb-): channels:read, channels:write.invites',
+    userTokenScopes: 'ユーザートークン (xoxp-): channels:read, channels:write.invites, channels:write',
     slackToken: 'Slackトークン',
     tokenPlaceholder: 'xoxb-... または xoxp-...',
     tokenHelp: 'ボットトークン (xoxb-) またはユーザートークン (xoxp-)',
@@ -342,6 +346,14 @@ export default function Home() {
                     </a>
                     {language === 'ja' ? 'にアクセス' : ''}
                   </>
+                ) : index === 3 ? (
+                  <>
+                    {step}
+                    <ul className="list-disc list-inside ml-4 mt-1">
+                      <li className="text-xs">{t.botTokenScopes}</li>
+                      <li className="text-xs">{t.userTokenScopes}</li>
+                    </ul>
+                  </>
                 ) : (
                   step
                 )}
@@ -361,7 +373,7 @@ export default function Home() {
               placeholder={t.tokenPlaceholder}
               value={token}
               onChange={(e) => setToken(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
             <p className="text-xs text-gray-500 mt-1">{t.tokenHelp}</p>
           </div>
@@ -377,7 +389,7 @@ export default function Home() {
                 placeholder={t.patternPlaceholder}
                 value={pattern}
                 onChange={(e) => setPattern(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
               />
               <p className="text-xs text-gray-500 mt-1">{t.patternHelp}</p>
             </div>
@@ -390,7 +402,7 @@ export default function Home() {
                 id="matchType"
                 value={matchType}
                 onChange={(e) => setMatchType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
               >
                 <option value="prefix">{t.prefix}</option>
                 <option value="suffix">{t.suffix}</option>
@@ -409,27 +421,10 @@ export default function Home() {
               placeholder={t.filterUserPlaceholder}
               value={filterByUserMembership}
               onChange={(e) => setFilterByUserMembership(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
             />
             <p className="text-xs text-gray-500 mt-1">{t.filterUserHelp}</p>
           </div>
-
-          {isBotToken && (
-            <div className="transition-all duration-300">
-              <label htmlFor="filterUserId" className="block text-sm font-medium text-gray-700 mb-2">
-                {t.userIdToInvite}
-              </label>
-              <input
-                type="text"
-                id="filterUserId"
-                placeholder={t.userIdPlaceholder}
-                value={filterUserId}
-                onChange={(e) => setFilterUserId(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-              <p className="text-xs text-gray-500 mt-1">{t.userIdHelp}</p>
-            </div>
-          )}
 
           <button
             onClick={fetchChannels}
@@ -450,13 +445,13 @@ export default function Home() {
                 </span>
                 <button
                   onClick={selectAll}
-                  className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded"
+                  className="px-3 py-1 text-sm bg-purple-600 text-white hover:bg-purple-700 rounded transition duration-200"
                 >
                   {t.selectAll}
                 </button>
                 <button
                   onClick={deselectAll}
-                  className="px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded"
+                  className="px-3 py-1 text-sm bg-gray-600 text-white hover:bg-gray-700 rounded transition duration-200"
                 >
                   {t.deselectAll}
                 </button>
@@ -494,6 +489,23 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {isBotToken && selectedChannels.size > 0 && (
+              <div className="mb-4 transition-all duration-300">
+                <label htmlFor="filterUserId" className="block text-sm font-medium text-gray-700 mb-2">
+                  {t.userIdToInvite}
+                </label>
+                <input
+                  type="text"
+                  id="filterUserId"
+                  placeholder={t.userIdPlaceholder}
+                  value={filterUserId}
+                  onChange={(e) => setFilterUserId(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-black"
+                />
+                <p className="text-xs text-gray-500 mt-1">{t.userIdHelp}</p>
+              </div>
+            )}
 
             <button
               onClick={joinSelectedChannels}
