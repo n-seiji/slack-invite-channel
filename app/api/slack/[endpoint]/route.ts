@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { endpoint: string } }
+  { params }: { params: Promise<{ endpoint: string }> }
 ) {
-  const endpoint = params.endpoint;
+  const { endpoint } = await params;
   const body = await request.json();
   const { token, ...slackParams } = body;
 
